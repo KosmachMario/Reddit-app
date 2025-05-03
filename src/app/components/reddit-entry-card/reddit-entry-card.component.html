@@ -1,0 +1,39 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>{{ redditEntry.title }}</mat-card-title>
+      <mat-card-subtitle>
+        Posted by <span> u/{{ redditEntry.author }} </span> •
+        {{ redditEntry.created | date : "medium" }}
+      </mat-card-subtitle>
+      @if (redditEntry.thumbnail) {
+      <img
+        mat-card-lg-image
+        [src]="redditEntry.thumbnail"
+        (error)="handleImageError($event)"
+      />
+      }
+    </mat-card-title-group>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="entry-stats">
+      <span class="entry-stat">
+        <mat-icon>arrow_upward</mat-icon>
+        {{ redditEntry.score }} Points
+      </span>
+      <span class="entry-stat">
+        <mat-icon>comment</mat-icon>
+        {{ redditEntry.numComments }} Comments
+      </span>
+      <a
+        [href]="'https://www.reddit.com' + redditEntry.permalink"
+        target="_blank"
+        class="entry-permalink"
+      >
+        <mat-icon>link</mat-icon>
+        Open on Reddit
+      </a>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,9 +1,18 @@
 @use "@angular/material" as mat;
 
-:host {
-  display: block;
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-h1 {
-  color: var(--mat-sys-primary);
+.feed-title {
+  & > span {
+    color: var(--mat-sys-primary);
+  }
+}
+
+.entries-container {
+  margin-top: 32px;
 }

@@ -1,1 +1,15 @@
-<h1>Reddit Feed Component</h1>
+<div class="feed-container">
+  <h1 class="feed-title">
+    Current Subreddit: <span>r/{{ subreddit$ | async }}</span>
+  </h1>
+
+  @if (loading$ | async) {
+  <mat-progress-bar mode="indeterminate" />
+  } @else { @if (entries$ | async; as entries) {
+  <div class="entries-container">
+    @for (entry of entries; track entry.id) {
+    <app-reddit-entry-card [redditEntry]="entry" />
+    }
+  </div>
+  } }
+</div>
