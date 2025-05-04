@@ -6,18 +6,39 @@
         >u/{{ comment.author }} • {{ comment.created | appTimeAgo }} •
         {{ comment.score }} points</mat-card-title
       >
+
+      @if (comment.replies && comment.replies.length > 0) {
+      <button
+        mat-icon-button
+        (click)="toggleReplies(comment)"
+        class="collapse-button"
+      >
+        <mat-icon>{{
+          comment.collapsed ? "expand_more" : "expand_less"
+        }}</mat-icon>
+      </button>
+      }
     </mat-card-header>
 
     <mat-card-content>
       <p class="comment-body">{{ comment.body }}</p>
 
-      @if (comment.replies && comment.replies.length > 0) {
+      @if (comment.replies && comment.replies.length > 0) { @if
+      (comment.collapsed) {
+      <div class="collapsed-replies-summary" (click)="toggleReplies(comment)">
+        <mat-icon>forum</mat-icon>
+        <span
+          >{{ comment.replies.length }}
+          {{ comment.replies.length === 1 ? "reply" : "replies" }} hidden</span
+        >
+      </div>
+      } @else {
       <div class="comment-replies">
         <app-reddit-comment-tree
           [comments]="comment.replies"
         ></app-reddit-comment-tree>
       </div>
-      }
+      } }
     </mat-card-content>
   </mat-card>
   }

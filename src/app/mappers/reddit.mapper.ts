@@ -45,6 +45,7 @@ export class RedditMapper {
           score: data.score,
           created: new Date(data.created_utc * 1000),
           replies: replies,
+          collapsed: true,
         };
       });
   }

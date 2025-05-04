@@ -1,3 +1,5 @@
+@use "../../styles/mixins" as mixins;
+
 .comment-card {
   margin-bottom: 16px;
   border: 0;
@@ -20,4 +22,28 @@ mat-card-title {
   border-bottom: 2px solid var(--mat-sys-inverse-primary);
   border-radius: 10px;
   margin-top: 16px;
+}
+
+.collapse-button {
+  margin-left: auto;
+  color: var(--mat-sys-secondary);
+}
+
+.collapsed-replies-summary {
+  display: flex;
+  align-items: center;
+  color: var(--mat-sys-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--mat-sys-surface-container);
+  cursor: pointer;
+
+  mat-icon {
+    @include mixins.mat-icon-size(16px);
+    margin-right: 8px;
+  }
+
+  span {
+    font: var(--mat-sys-body-medium);
+  }
 }

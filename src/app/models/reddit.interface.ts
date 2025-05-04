@@ -38,6 +38,7 @@ export interface RedditComment {
   body: string;
   score: number;
   created: Date;
+  collapsed?: boolean;
   replies: RedditComment[];
 }
 
