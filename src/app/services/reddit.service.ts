@@ -46,10 +46,9 @@ export class RedditService {
   ): void {
     this._loading.next(true);
 
-    const subreddit = this._currentSubreddit.value;
     const limit = this._entriesPerPage.value;
 
-    this.getSubRedditFeed(subreddit, limit, after)
+    this.getSubRedditFeed(limit, after)
       .pipe(
         take(1),
         finalize(() => this._loading.next(false))
@@ -71,7 +70,6 @@ export class RedditService {
   }
 
   public getSubRedditFeed(
-    subreddit: string,
     limit: number,
     after?: string | null
   ): Observable<RedditResponse> {
@@ -80,7 +78,10 @@ export class RedditService {
     if (after) params = params.set('after', after);
 
     return this.http
-      .get<RedditResponse>(`${this.BASE_URL}/${subreddit}.json`, { params })
+      .get<RedditResponse>(
+        `${this.BASE_URL}/${this._currentSubreddit.value}.json`,
+        { params }
+      )
       .pipe(catchError(this.handleError));
   }
 

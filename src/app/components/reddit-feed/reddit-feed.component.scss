@@ -2,19 +2,6 @@
 
 @use "../../styles/mixins" as mixins;
 
-.feed-container {
-  display: flex;
-  flex-direction: column;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.feed-title {
-  & > span {
-    color: var(--mat-sys-primary);
-  }
-}
-
 .feed-toolbar {
   justify-content: space-between;
   align-items: center;
@@ -36,19 +23,6 @@
 
 .entries-container {
   margin-top: 32px;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48px 0;
-  color: var(--mat-sys-secondary);
-
-  mat-icon {
-    @include mixins.mat-icon-size(48px);
-    margin-bottom: 16px;
-  }
 }
 
 .pagination {

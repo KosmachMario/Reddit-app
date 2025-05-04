@@ -1,0 +1,12 @@
+<button mat-button (click)="goBack()" class="back-button">
+  <mat-icon>arrow_back</mat-icon>
+  Back to Feed
+</button>
+
+@if(loading()) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @else { @if(redditEntry()) {
+<app-reddit-entry-card [redditEntry]="redditEntry()!" [isDetails]="true" />
+} @else {
+<app-empty-state message="No Reddit entry found." />
+}}

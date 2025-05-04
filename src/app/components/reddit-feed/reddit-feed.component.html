@@ -1,62 +1,53 @@
-<div class="feed-container">
-  <h1 class="feed-title">
-    Current Subreddit: <span>r/{{ subreddit$ | async }}</span>
-  </h1>
-
-  <mat-toolbar class="feed-toolbar">
-    <mat-form-field appearance="outline">
-      <mat-label>Subreddit</mat-label>
-      <input matInput #subredditInput [value]="subreddit$ | async" />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="changeSubreddit(subredditInput.value)"
-      >
-        <mat-icon>search</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-button-toggle-group
-      [value]="entriesPerPage$ | async"
-      (change)="changeEntriesPerPage($event.value)"
-    >
-      <mat-button-toggle [value]="5">5</mat-button-toggle>
-      <mat-button-toggle [value]="10">10</mat-button-toggle>
-      <mat-button-toggle [value]="25">25</mat-button-toggle>
-    </mat-button-toggle-group>
-  </mat-toolbar>
-
-  @if (loading$ | async) {
-  <mat-progress-bar mode="indeterminate" />
-  } @else { @if (entries$ | async; as entries) {
-  <div class="entries-container">
-    @for (entry of entries; track entry.id) {
-    <app-reddit-entry-card [redditEntry]="entry" />
-    } @if (entries?.length === 0 && !(loading$ | async)) {
-    <div class="empty-state">
-      <mat-icon>sentiment_dissatisfied</mat-icon>
-      <p>No entries found for this Subreddit.</p>
-    </div>
-    }
-  </div>
-  } } @if (!(loading$ | async)) {
-  <div class="pagination">
+<mat-toolbar class="feed-toolbar">
+  <mat-form-field appearance="outline">
+    <mat-label>Subreddit</mat-label>
+    <input matInput #subredditInput [value]="subreddit$ | async" />
     <button
-      mat-raised-button
-      [disabled]="!(hasPreviousPage$ | async)"
-      (click)="previousPage()"
+      mat-icon-button
+      matSuffix
+      (click)="changeSubreddit(subredditInput.value)"
     >
-      <mat-icon>navigate_before</mat-icon>
-      Previous
+      <mat-icon>search</mat-icon>
     </button>
-    <button
-      mat-raised-button
-      [disabled]="!(hasNextPage$ | async)"
-      (click)="nextPage()"
-    >
-      Next
-      <mat-icon>navigate_next</mat-icon>
-    </button>
-  </div>
+  </mat-form-field>
+
+  <mat-button-toggle-group
+    [value]="entriesPerPage$ | async"
+    (change)="changeEntriesPerPage($event.value)"
+  >
+    <mat-button-toggle [value]="5">5</mat-button-toggle>
+    <mat-button-toggle [value]="10">10</mat-button-toggle>
+    <mat-button-toggle [value]="25">25</mat-button-toggle>
+  </mat-button-toggle-group>
+</mat-toolbar>
+
+@if (loading$ | async) {
+<mat-progress-bar mode="indeterminate" />
+} @else { @if (entries$ | async; as entries) {
+<div class="entries-container">
+  @for (entry of entries; track entry.id) {
+  <app-reddit-entry-card [redditEntry]="entry" (click)="viewEntry(entry)" />
+  } @if (entries?.length === 0 && !(loading$ | async)) {
+  <app-empty-state />
   }
 </div>
+} } @if (!(loading$ | async)) {
+<div class="pagination">
+  <button
+    mat-raised-button
+    [disabled]="!(hasPreviousPage$ | async)"
+    (click)="previousPage()"
+  >
+    <mat-icon>navigate_before</mat-icon>
+    Previous
+  </button>
+  <button
+    mat-raised-button
+    [disabled]="!(hasNextPage$ | async)"
+    (click)="nextPage()"
+  >
+    Next
+    <mat-icon>navigate_next</mat-icon>
+  </button>
+</div>
+}

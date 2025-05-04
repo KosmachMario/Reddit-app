@@ -17,13 +17,14 @@ describe('AppComponent', () => {
   it(`should have the 'reddit-feed' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('reddit-feed');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, reddit-feed');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'Hello, reddit-feed'
+    );
   });
 });

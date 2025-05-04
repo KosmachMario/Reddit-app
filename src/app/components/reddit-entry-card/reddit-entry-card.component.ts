@@ -13,6 +13,7 @@ import { RedditEntry } from '../../models/reddit.interface';
 })
 export class RedditEntryCardComponent {
   @Input() redditEntry!: RedditEntry;
+  @Input() isDetails: boolean = false;
 
   public handleImageError(event: Event): void {
     const imgElement = event.target as HTMLImageElement;

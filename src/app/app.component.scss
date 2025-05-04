@@ -3,3 +3,21 @@
   height: 100%;
   padding: 20px 70px;
 }
+
+.reddit-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.reddit-title {
+  margin-bottom: 32px;
+  & > span {
+    color: var(--mat-sys-primary);
+  }
+}
+
+.reddit-content {
+  padding-top: 32px;
+}

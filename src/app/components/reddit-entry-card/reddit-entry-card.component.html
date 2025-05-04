@@ -1,4 +1,4 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" [class.listing-card]="!isDetails">
   <mat-card-header>
     <mat-card-title-group>
       <mat-card-title>{{ redditEntry.title }}</mat-card-title>
@@ -17,6 +17,12 @@
   </mat-card-header>
 
   <mat-card-content>
+    @if (isDetails && redditEntry.selftext) {
+    <div class="entry-selftext">
+      <p>{{ redditEntry.selftext }}</p>
+    </div>
+    }
+
     <div class="entry-stats">
       <span class="entry-stat">
         <mat-icon>arrow_upward</mat-icon>
@@ -30,6 +36,7 @@
         [href]="'https://www.reddit.com' + redditEntry.permalink"
         target="_blank"
         class="entry-permalink"
+        (click)="$event.stopPropagation()"
       >
         <mat-icon>link</mat-icon>
         Open on Reddit

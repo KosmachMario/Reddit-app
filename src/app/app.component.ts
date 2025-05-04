@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { RedditService } from './services/reddit.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, AsyncPipe],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'reddit-feed';
+  public subreddit$ = this.redditService.currentSubreddit$;
+
+  constructor(private readonly redditService: RedditService) {}
 }
