@@ -4,6 +4,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { RedditService } from '../../services/reddit.service';
 import { RedditEntryCardComponent } from '../reddit-entry-card/reddit-entry-card.component';
 import { map } from 'rxjs';
@@ -17,6 +21,10 @@ import { map } from 'rxjs';
     MatIconModule,
     RedditEntryCardComponent,
     MatButtonModule,
+    MatToolbarModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './reddit-feed.component.html',
   styleUrl: './reddit-feed.component.scss',
@@ -41,5 +49,13 @@ export class RedditFeedComponent {
 
   public previousPage(): void {
     this.redditService.goToPreviousPage();
+  }
+
+  public changeSubreddit(subreddit: string): void {
+    this.redditService.setSubreddit(subreddit);
+  }
+
+  public changeEntriesPerPage(count: number): void {
+    this.redditService.setEntriesPerPage(count);
   }
 }

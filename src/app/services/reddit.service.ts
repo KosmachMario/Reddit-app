@@ -103,6 +103,22 @@ export class RedditService {
     }
   }
 
+  public setSubreddit(subreddit: string): void {
+    this._currentSubreddit.next(subreddit);
+    this.resetAndLoadFeed();
+  }
+
+  public setEntriesPerPage(count: number): void {
+    this._entriesPerPage.next(count);
+    this.resetAndLoadFeed();
+  }
+
+  private resetAndLoadFeed(): void {
+    this._currentAfter.next(null);
+    this._beforeHistory.next([]);
+    this.loadFeed();
+  }
+
   private addBeforeToHistory(before: string | null): void {
     if (!before) return;
 

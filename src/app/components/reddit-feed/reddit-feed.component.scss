@@ -15,6 +15,25 @@
   }
 }
 
+.feed-toolbar {
+  justify-content: space-between;
+  align-items: center;
+
+  mat-form-field {
+    width: 100%;
+    max-width: 300px;
+
+    button[mat-icon-button] {
+      margin-right: 8px;
+    }
+
+    mat-icon {
+      @include mixins.mat-icon-size(24px);
+      color: var(--mat-sys-primary);
+    }
+  }
+}
+
 .entries-container {
   margin-top: 32px;
 }
