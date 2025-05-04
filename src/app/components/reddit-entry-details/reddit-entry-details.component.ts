@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { finalize, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { finalize, map, Observable, of, take } from 'rxjs';
 import {
   RedditChild,
   RedditComment,
@@ -36,31 +36,16 @@ export class RedditEntryDetailsComponent {
   private entryId = this.route.snapshot.paramMap.get('id');
 
   public loading = signal<boolean>(true);
+  public comments = signal<RedditComment[]>([]);
 
-  private entry$ = this.redditService.currentEntries$.pipe(
-    map(
-      (entries) => entries.find((entry) => entry.id === this.entryId) || null
-    ),
-    tap((entry) => {
-      if (!entry) this.loading.set(false);
-    }),
-    take(1)
+  private entry$ = this.getEntry().pipe(
+    take(1),
+    finalize(() => this.loading.set(false))
   );
 
   public redditEntry = toSignal(this.entry$, {
     initialValue: null as RedditEntry | null,
   });
-
-  public comments = toSignal(
-    this.entry$.pipe(
-      switchMap((entry) => {
-        if (!entry) return of([] as RedditComment[]);
-        return this.getThreadedComments();
-      }),
-      finalize(() => this.loading.set(false))
-    ),
-    { initialValue: [] as RedditComment[] }
-  );
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -72,16 +57,19 @@ export class RedditEntryDetailsComponent {
     this.location.back();
   }
 
-  private getThreadedComments(): Observable<RedditComment[]> {
+  private getEntry(): Observable<RedditEntry | null> {
     if (!this.entryId) {
-      return of([]);
+      return of(null);
     }
 
-    return this.redditService.getEntryComments(this.entryId).pipe(
-      map((response) => {
-        const commentsData = response[1].data
+    return this.redditService.getEntryById(this.entryId).pipe(
+      map(([entryResponse, commentsResponse]) => {
+        const commentsData = commentsResponse.data
           .children as unknown as RedditChild<RedditCommentInput>[];
-        return RedditMapper.parseComments(commentsData);
+        this.comments.set(RedditMapper.parseComments(commentsData));
+
+        const data = entryResponse.data.children[0];
+        return RedditMapper.transformEntries([data])[0];
       })
     );
   }

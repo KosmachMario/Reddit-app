@@ -1,7 +1,12 @@
 <mat-toolbar class="feed-toolbar">
   <mat-form-field appearance="outline">
     <mat-label>Subreddit</mat-label>
-    <input matInput #subredditInput [value]="subreddit$ | async" />
+    <input
+      matInput
+      #subredditInput
+      [value]="subreddit$ | async"
+      (keyup.enter)="changeSubreddit(subredditInput.value)"
+    />
     <button
       mat-icon-button
       matSuffix

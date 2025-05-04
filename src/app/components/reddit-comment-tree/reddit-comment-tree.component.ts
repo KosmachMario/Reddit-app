@@ -4,6 +4,7 @@ import { RedditComment } from '../../models/reddit.interface';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
+import { expandCollapseAnimation } from '../../animations/expand-collapse.animation';
 
 @Component({
   selector: 'app-reddit-comment-tree',
@@ -11,6 +12,7 @@ import { MatIconButton } from '@angular/material/button';
   templateUrl: './reddit-comment-tree.component.html',
   styleUrl: './reddit-comment-tree.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [expandCollapseAnimation],
 })
 export class RedditCommentTreeComponent {
   @Input()

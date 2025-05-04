@@ -28,17 +28,20 @@
       <div class="collapsed-replies-summary" (click)="toggleReplies(comment)">
         <mat-icon>forum</mat-icon>
         <span
-          >{{ comment.replies.length }}
-          {{ comment.replies.length === 1 ? "reply" : "replies" }} hidden</span
+          >{{ comment.replies.length }} more
+          {{ comment.replies.length === 1 ? "reply" : "replies" }}</span
         >
       </div>
-      } @else {
-      <div class="comment-replies">
+      }
+      <div
+        class="comment-replies"
+        [@expandCollapse]="comment.collapsed ? 'collapsed' : 'expanded'"
+      >
         <app-reddit-comment-tree
           [comments]="comment.replies"
         ></app-reddit-comment-tree>
       </div>
-      } }
+      }
     </mat-card-content>
   </mat-card>
   }
