@@ -27,12 +27,14 @@ export class RedditService {
 
   private _entriesPerPage = new BehaviorSubject<number>(10);
   private _currentAfter = new BehaviorSubject<string | null>(null);
-  private _currentBefore = new BehaviorSubject<string | null>(null);
+  private _beforeHistory = new BehaviorSubject<string[]>([]);
 
-  public currentEntries$ = this._currentEntries.asObservable();
   public currentSubreddit$ = this._currentSubreddit.asObservable();
+  public currentEntries$ = this._currentEntries.asObservable();
   public loading$ = this._loading.asObservable();
   public entriesPerPage$ = this._entriesPerPage.asObservable();
+  public currentAfter$ = this._currentAfter.asObservable();
+  public beforeHistory$ = this._beforeHistory.asObservable();
 
   constructor(private http: HttpClient) {
     this.loadFeed();
@@ -40,14 +42,14 @@ export class RedditService {
 
   private loadFeed(
     after: string | null = null,
-    before: string | null = null
+    isBefore: boolean = false
   ): void {
     this._loading.next(true);
 
     const subreddit = this._currentSubreddit.value;
     const limit = this._entriesPerPage.value;
 
-    this.getSubRedditFeed(subreddit, limit, after, before)
+    this.getSubRedditFeed(subreddit, limit, after)
       .pipe(
         take(1),
         finalize(() => this._loading.next(false))
@@ -58,7 +60,9 @@ export class RedditService {
           this._currentEntries.next(entries);
 
           this._currentAfter.next(response.data.after);
-          this._currentBefore.next(response.data.before);
+          if (!isBefore) {
+            this.addBeforeToHistory(after);
+          }
         },
         error: (err) => {
           this._currentEntries.next([]);
@@ -69,17 +73,45 @@ export class RedditService {
   public getSubRedditFeed(
     subreddit: string,
     limit: number,
-    after?: string | null,
-    before?: string | null
+    after?: string | null
   ): Observable<RedditResponse> {
     let params = new HttpParams().set('limit', limit.toString());
 
     if (after) params = params.set('after', after);
-    if (before) params = params.set('before', before);
 
     return this.http
       .get<RedditResponse>(`${this.BASE_URL}/${subreddit}.json`, { params })
       .pipe(catchError(this.handleError));
+  }
+
+  public goToNextPage(): void {
+    const after = this._currentAfter.value;
+    if (after) {
+      this.loadFeed(after);
+    }
+  }
+
+  public goToPreviousPage(): void {
+    const before = this._beforeHistory.value;
+    if (before.length > 1) {
+      const lastBefore = before[before.length - 2];
+      this.loadFeed(lastBefore, true);
+      this._beforeHistory.next(before.slice(0, -1));
+    } else {
+      this.loadFeed();
+      this._beforeHistory.next([]);
+    }
+  }
+
+  private addBeforeToHistory(before: string | null): void {
+    if (!before) return;
+
+    const history = this._beforeHistory.value;
+
+    if (!history.includes(before)) {
+      history.push(before);
+      this._beforeHistory.next(history);
+    }
   }
 
   private handleError(error: HttpErrorResponse): Observable<any> {
