@@ -1,0 +1,24 @@
+<div class="comment-tree">
+  @for (comment of comments; track comment.id) {
+  <mat-card class="comment-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title
+        >u/{{ comment.author }} • {{ comment.created | appTimeAgo }} •
+        {{ comment.score }} points</mat-card-title
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="comment-body">{{ comment.body }}</p>
+
+      @if (comment.replies && comment.replies.length > 0) {
+      <div class="comment-replies">
+        <app-reddit-comment-tree
+          [comments]="comment.replies"
+        ></app-reddit-comment-tree>
+      </div>
+      }
+    </mat-card-content>
+  </mat-card>
+  }
+</div>

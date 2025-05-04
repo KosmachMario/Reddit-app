@@ -7,6 +7,19 @@
 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 } @else { @if(redditEntry()) {
 <app-reddit-entry-card [redditEntry]="redditEntry()!" [isDetails]="true" />
+
+<div class="comments-section">
+  <h3>Comments</h3>
+
+  @if(comments().length > 0) {
+  <app-reddit-comment-tree [comments]="comments()"></app-reddit-comment-tree>
+  } @else {
+  <div class="no-comments">
+    <mat-icon>forum</mat-icon>
+    <p>No comments yet.</p>
+  </div>
+  }
+</div>
 } @else {
 <app-empty-state message="No Reddit entry found." />
 }}

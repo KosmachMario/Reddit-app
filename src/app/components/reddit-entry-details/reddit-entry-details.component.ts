@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RedditMapper } from '../../mappers/reddit.mapper';
+import { RedditCommentTreeComponent } from '../reddit-comment-tree/reddit-comment-tree.component';
 
 @Component({
   selector: 'app-entry-details',
@@ -25,6 +26,7 @@ import { RedditMapper } from '../../mappers/reddit.mapper';
     EmptyStateComponent,
     MatButtonModule,
     MatIconModule,
+    RedditCommentTreeComponent,
   ],
   templateUrl: './reddit-entry-details.component.html',
   styleUrl: './reddit-entry-details.component.scss',

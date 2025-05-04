@@ -1,0 +1,23 @@
+.comment-card {
+  margin-bottom: 16px;
+  border: 0;
+}
+
+mat-card-title {
+  font: var(--mat-sys-title-small);
+  color: var(--mat-sys-secondary);
+  background-color: var(--mat-sys-secondary-container);
+}
+
+.comment-body {
+  white-space: pre-line;
+}
+
+.comment-replies {
+  margin-left: 24px;
+  padding-left: 16px;
+  border-left: 2px solid var(--mat-sys-inverse-primary);
+  border-bottom: 2px solid var(--mat-sys-inverse-primary);
+  border-radius: 10px;
+  margin-top: 16px;
+}
