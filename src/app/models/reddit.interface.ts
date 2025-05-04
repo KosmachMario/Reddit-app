@@ -9,9 +9,9 @@ export interface RedditResponse {
   };
 }
 
-export interface RedditChild {
+export interface RedditChild<T = RedditEntryInput> {
   kind: string;
-  data: RedditEntryInput;
+  data: T;
 }
 
 export interface RedditEntry {
@@ -30,4 +30,20 @@ export interface RedditEntry {
 export type RedditEntryInput = Omit<RedditEntry, 'created' | 'numComments'> & {
   created_utc: number;
   num_comments: number;
+};
+
+export interface RedditComment {
+  id: string;
+  author: string;
+  body: string;
+  score: number;
+  created: Date;
+  replies: RedditComment[];
+}
+
+export type RedditCommentInput = Omit<RedditComment, 'created' | 'replies'> & {
+  created_utc: number;
+  replies: {
+    data: { children: RedditChild<RedditCommentInput>[] };
+  };
 };

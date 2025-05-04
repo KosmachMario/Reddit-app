@@ -1,4 +1,9 @@
-import { RedditChild, RedditEntry } from '../models/reddit.interface';
+import {
+  RedditChild,
+  RedditComment,
+  RedditCommentInput,
+  RedditEntry,
+} from '../models/reddit.interface';
 
 export class RedditMapper {
   static transformEntries(children: RedditChild[]): RedditEntry[] {
@@ -17,5 +22,30 @@ export class RedditMapper {
         url: data.url,
       };
     });
+  }
+
+  static parseComments(
+    comments: RedditChild<RedditCommentInput>[]
+  ): RedditComment[] {
+    if (!comments || comments.length === 0) return [];
+
+    return comments
+      .filter((comment) => comment.kind === 't1')
+      .map((comment) => {
+        const data: RedditCommentInput = comment.data;
+        const replies =
+          data.replies && data.replies.data
+            ? RedditMapper.parseComments(data.replies.data.children)
+            : [];
+
+        return {
+          id: data.id,
+          author: data.author,
+          body: data.body,
+          score: data.score,
+          created: new Date(data.created_utc * 1000),
+          replies: replies,
+        };
+      });
   }
 }

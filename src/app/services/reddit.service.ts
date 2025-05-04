@@ -114,6 +114,14 @@ export class RedditService {
     this.resetAndLoadFeed();
   }
 
+  public getEntryComments(entryId: string): Observable<RedditResponse[]> {
+    return this.http
+      .get<RedditResponse[]>(
+        `${this.BASE_URL}/${this._currentSubreddit.value}/comments/${entryId}.json`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   private resetAndLoadFeed(): void {
     this._currentAfter.next(null);
     this._beforeHistory.next([]);
