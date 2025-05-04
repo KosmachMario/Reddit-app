@@ -1,4 +1,4 @@
-# Summary on what has been done here
+# Summary on what has been done
 
 This application uses Reddit's public API to provide a custom Reddit experience. It features two main views:
 
